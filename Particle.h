@@ -34,19 +34,28 @@ public:
     rx_(rx), ry_(ry), vx_(vx), vy_(vy),count_(count), r_(r),
     mass_(mass), color_(color){};
 
-    particle();
+    /* particle();*/
 
     inline int count() { return count_;}
 
     void move(double dt);
 
-    void draw(sf::RenderWindow *window);
+    void draw(sf::RenderWindow* window);
 
-    double timeToHit(particle *other);
+    double timeToHit(particle* other);
 
     double timeToHitVerticalWall();
 
     double timeToHitHorizontalWall();
+
+    void bounceOff(particle* other);
+
+    void bounceOffVerticalWall();
+
+    void bounceOffHorizontalWall();
+
+    double kineticEnergy();
+
 
 };
 

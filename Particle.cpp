@@ -1,5 +1,6 @@
 #include "Particle.h"
 
+/*
 particle::particle(){
     rx_ = static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
     ry_ = static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
@@ -9,6 +10,7 @@ particle::particle(){
     mass_ = 0.5;
     color_ = sf::Color::Green;
 }
+*/
 
 void particle::move(double dt) {
     rx_ += vx_ * dt;
@@ -79,3 +81,47 @@ double particle::timeToHitHorizontalWall() {
     else
         return INFINITY;
 }
+
+
+void particle::bounceOff(particle* other){
+    double dx_  = other->rx_ - this->rx_;
+    double dy_  = other->ry_ - this->ry_;
+    double dvx_ = other->vx_ - this->vx_;
+    double dvy_= other->vy_ - this->vy_;
+    double dvdr_ = dx_*dvx_ + dy_*dvy_;
+    double distance_ = this->r_ + other->r_;
+
+    double magni = 2* this->mass_ * other->mass_ * dvdr_ / ((this->mass_ + other->mass_) * distance_);
+
+    double fx_ = magni * dx_ / distance_;
+    double fy_ = magni * dy_ / distance_;
+
+    // update velocities according to normal force
+    this->vx_ += fx_ / this->mass_;
+    this->vy_ += fy_ / this->mass_;
+    other->vx_ -= fx_ / other->mass_;
+    other->vy_ -= fy_ / other->mass_;
+
+    // update collision counts
+    this->count_++;
+    other->count_++;
+
+};
+
+void particle::bounceOffVerticalWall()
+{
+    vx_ = -vx_;
+    count_++;
+};
+
+void particle::bounceOffHorizontalWall()
+{
+    vy_ = -vy_;
+    count_++;
+
+};
+
+double particle::kineticEnergy()
+{
+    return 0.5 * mass_ * (vx_*vx_ + vy_*vy_);
+};

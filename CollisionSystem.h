@@ -16,9 +16,12 @@ private:
 
 public:
 
+    friend class event;
+
     CollisionSystem(std::vector<particle*> particles){
         this->particles = particles;
     };
+
 
     void predict (particle *a, double limit){
         if (a == nullptr)
@@ -54,12 +57,36 @@ void redraw(double limit, RenderWindow* window) {
 void simulate (double limit, RenderWindow* window)
 {
     pq = new std::priority_queue <event*, std::vector<event*>, comparetime>;
+    for (int i = 0; i < particles.size(); i++)
+    {
+        predict(particles[i], limit);
+    }
+    pq->push(new event(0, nullptr, nullptr));
+
 
     while(!pq->empty()){
 
         event* e = pq->top();
         pq->pop();
+        if (!e->isValid()) continue;
+        particle* a = e->a;
+        particle* b = e->b;
 
+        for (int x= 0; x < particles.size(); ++x)
+            particles[x]->move(e->event_time -time);
+        time =e->event_time;
+
+        if (a != nullptr && b != nullptr)
+            a->bounceOff(b);
+        else if (a != nullptr && b == nullptr)
+            a->bounceOffVerticalWall();
+        else if (a == nullptr && b != nullptr)
+            b->bounceOffHorizontalWall();
+        else if (a == nullptr && b == nullptr)
+            redraw(limit,window);
+
+        predict(a, limit);
+        predict(b, limit);
     }
 }
 
