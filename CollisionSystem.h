@@ -42,13 +42,13 @@ public:
     };
 
 void redraw(double limit, RenderWindow* window) {
-    window->clear();
+    window->clear(sf::Color(255,255, 255, 255));
         for (int i = 0; i < particles.size(); i++) {
             particles[i]->draw(window);
         }
         window->display();
 
-        sf::sleep(sf::Time(sf::milliseconds(20)));
+        sf::sleep(sf::Time(sf::milliseconds(1000)));
         if (time < limit) {
             pq->push(new event(time + 1.0 / HZ, nullptr, nullptr));
         }

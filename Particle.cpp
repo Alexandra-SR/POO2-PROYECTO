@@ -19,7 +19,7 @@ void particle::move(double dt) {
 
 void particle::draw(sf::RenderWindow *window){
     //prueba tamaño radio
-    sf::CircleShape circle(r_*1000);
+    sf::CircleShape circle(r_*1000*1000);
     circle.setFillColor(color_);
     circle.setPosition(rx_*window->getSize().x, ry_*window->getSize().y);
     window->draw(circle);

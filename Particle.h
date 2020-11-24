@@ -29,9 +29,10 @@ private:
 
 public:
 
+
     particle(double rx, double ry, double vx, double vy,
-    int count, double r, double mass, sf::Color color):
-    rx_(rx), ry_(ry), vx_(vx), vy_(vy),count_(count), r_(r),
+    double r, double mass, sf::Color color):
+    rx_(rx), ry_(ry), vx_(vx), vy_(vy),r_(r),
     mass_(mass), color_(color){};
 
     /* particle();*/
