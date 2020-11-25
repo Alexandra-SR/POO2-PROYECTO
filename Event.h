@@ -29,12 +29,7 @@ public:
         else countB = -1;
     }
 
-    /*
-    int compareTo(event* other)
-    {
-        return (this->event_time > other->event_time);
-    }
-    */
+
     bool isValid()
     {
         if (a!= nullptr && a->count()!= countA)
@@ -44,7 +39,6 @@ public:
         return  1;
 
     }
-
 
 
 

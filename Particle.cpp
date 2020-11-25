@@ -1,17 +1,5 @@
 #include "Particle.h"
 
-/*
-particle::particle(){
-    rx_ = static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
-    ry_ = static_cast <double> (rand()) / static_cast <double> (RAND_MAX);
-    vx_ = -0.005 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.005-(-0.005))));
-    vy_ = -0.005 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(0.005-(-0.005))));
-    r_ = 0.02;
-    mass_ = 0.5;
-    color_ = sf::Color::Green;
-}
-*/
-
 void particle::move(double dt) {
     rx_ += vx_ * dt;
     ry_ += vy_ * dt;
@@ -20,7 +8,7 @@ void particle::move(double dt) {
 void particle::draw(sf::RenderWindow *window){
     //prueba tamaño radio
     sf::CircleShape circle(r_*1000*1000);
-    circle.setFillColor(color_);
+    circle.setFillColor(sf::Color(this->red, this->gr, this->blu,255));
     circle.setPosition(rx_*window->getSize().x, ry_*window->getSize().y);
     window->draw(circle);
 }

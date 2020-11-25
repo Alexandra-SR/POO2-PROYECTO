@@ -25,17 +25,15 @@ private:
 //radio de la particula
     double r_;
     double mass_;
-    sf::Color color_;
+    int red, gr, blu;
 
 public:
 
 
     particle(double rx, double ry, double vx, double vy,
-    double r, double mass, sf::Color color):
+    double r, double mass, int red, int gr, int blu):
     rx_(rx), ry_(ry), vx_(vx), vy_(vy),r_(r),
-    mass_(mass), color_(color){};
-
-    /* particle();*/
+    mass_(mass), red(red), gr(gr), blu(blu){};
 
     inline int count() { return count_;}
 

@@ -18,8 +18,21 @@ public:
 
     friend class event;
 
-    CollisionSystem(std::vector<particle*> particles){
-        this->particles = particles;
+    CollisionSystem(int limit, char path[]){
+        freopen(path, "r", stdin);
+        int n; std::cin >> n;
+        for (int i = 0; i < n; i++) {
+            double rx, ry, vx, vy, r, mass; int re, ge, be;
+            std::cin >> rx >> ry >> vx >> vy >> r >> mass >> re >> ge >> be;
+            this->particles.push_back(new particle(rx,ry,vx,vy,r,mass,re,ge,be));
+        }
+
+        pq = new std::priority_queue <event*, std::vector<event*>, comparetime>;
+        for (int i = 0; i < particles.size(); i++)
+        {
+            predict(particles[i], limit);
+        }
+        pq->push(new event(0, nullptr, nullptr));
     };
 
 
@@ -48,27 +61,29 @@ void redraw(double limit, RenderWindow* window) {
         }
         window->display();
 
-        sf::sleep(sf::Time(sf::milliseconds(1000)));
+        //sf::sleep(sf::Time(sf::milliseconds(1000)));
         if (time < limit) {
             pq->push(new event(time + 1.0 / HZ, nullptr, nullptr));
         }
 }
 
+void draw(RenderWindow* window){
+    window->clear(sf::Color(255,255, 255, 255));
+    for (int i = 0; i < particles.size(); i++) {
+        particles[i]->draw(window);
+    }
+    window->display();
+};
+
 void simulate (double limit, RenderWindow* window)
 {
-    pq = new std::priority_queue <event*, std::vector<event*>, comparetime>;
-    for (int i = 0; i < particles.size(); i++)
-    {
-        predict(particles[i], limit);
-    }
-    pq->push(new event(0, nullptr, nullptr));
 
+    if(!pq->empty()){
 
-    while(!pq->empty()){
-
+        draw(window);
         event* e = pq->top();
         pq->pop();
-        if (!e->isValid()) continue;
+        if (!e->isValid()) return;
         particle* a = e->a;
         particle* b = e->b;
 
@@ -89,19 +104,6 @@ void simulate (double limit, RenderWindow* window)
         predict(b, limit);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 };
 
